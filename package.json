@@ -1,6 +1,6 @@
 {
   "name": "local-model-inference",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Desktop app for running AI model inference locally via Ollama",
   "main": "./out/main/index.js",
   "author": "Zachary Yu",
@@ -84,6 +84,7 @@
         "AppImage"
       ],
       "category": "Development"
-    }
+    },
+    "afterSign": "scripts/adhoc-sign.mjs"
   }
 }
