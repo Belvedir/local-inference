@@ -1,4 +1,24 @@
+import metaLogo from '@lobehub/icons-static-svg/icons/meta-color.svg'
+import qwenLogo from '@lobehub/icons-static-svg/icons/qwen-color.svg'
+import gemmaLogo from '@lobehub/icons-static-svg/icons/gemma-color.svg'
+import deepseekLogo from '@lobehub/icons-static-svg/icons/deepseek-color.svg'
+import microsoftLogo from '@lobehub/icons-static-svg/icons/microsoft-color.svg'
+import openaiLogo from '@lobehub/icons-static-svg/icons/openai.svg'
+import mistralLogo from '@lobehub/icons-static-svg/icons/mistral-color.svg'
+
 export type Category = 'general' | 'coding' | 'reasoning' | 'vision'
+
+export type Vendor = 'meta' | 'qwen' | 'google' | 'deepseek' | 'microsoft' | 'openai' | 'mistral'
+
+export const VENDORS: Record<Vendor, { label: string; logo: string }> = {
+  meta: { label: 'Meta', logo: metaLogo },
+  qwen: { label: 'Qwen', logo: qwenLogo },
+  google: { label: 'Google', logo: gemmaLogo },
+  deepseek: { label: 'DeepSeek', logo: deepseekLogo },
+  microsoft: { label: 'Microsoft', logo: microsoftLogo },
+  openai: { label: 'OpenAI', logo: openaiLogo },
+  mistral: { label: 'Mistral', logo: mistralLogo }
+}
 
 export const CATEGORY_LABEL: Record<Category, string> = {
   general: 'General',
@@ -11,6 +31,7 @@ export interface CuratedModel {
   tag: string
   title: string
   params: string
+  vendor: Vendor
   category: Category
   blurb: string
   downloadGB: number
@@ -21,6 +42,7 @@ export interface CuratedModel {
 export const CURATED: CuratedModel[] = [
   {
     tag: 'llama3.2:1b',
+    vendor: 'meta',
     title: 'Llama 3.2',
     params: '1B',
     category: 'general',
@@ -30,6 +52,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'llama3.2:3b',
+    vendor: 'meta',
     title: 'Llama 3.2',
     params: '3B',
     category: 'general',
@@ -39,6 +62,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen3:4b',
+    vendor: 'qwen',
     title: 'Qwen3',
     params: '4B',
     category: 'general',
@@ -48,6 +72,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'gemma3:4b',
+    vendor: 'google',
     title: 'Gemma 3',
     params: '4B',
     category: 'vision',
@@ -57,6 +82,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'llama3.1:8b',
+    vendor: 'meta',
     title: 'Llama 3.1',
     params: '8B',
     category: 'general',
@@ -66,6 +92,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen2.5-coder:7b',
+    vendor: 'qwen',
     title: 'Qwen2.5 Coder',
     params: '7B',
     category: 'coding',
@@ -75,6 +102,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'deepseek-r1:8b',
+    vendor: 'deepseek',
     title: 'DeepSeek-R1',
     params: '8B',
     category: 'reasoning',
@@ -84,6 +112,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen3:8b',
+    vendor: 'qwen',
     title: 'Qwen3',
     params: '8B',
     category: 'general',
@@ -93,6 +122,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'gemma3:12b',
+    vendor: 'google',
     title: 'Gemma 3',
     params: '12B',
     category: 'vision',
@@ -102,6 +132,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'phi4:14b',
+    vendor: 'microsoft',
     title: 'Phi-4',
     params: '14B',
     category: 'general',
@@ -111,6 +142,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen3:14b',
+    vendor: 'qwen',
     title: 'Qwen3',
     params: '14B',
     category: 'general',
@@ -120,6 +152,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen2.5-coder:14b',
+    vendor: 'qwen',
     title: 'Qwen2.5 Coder',
     params: '14B',
     category: 'coding',
@@ -129,6 +162,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'gpt-oss:20b',
+    vendor: 'openai',
     title: 'GPT-OSS',
     params: '20B',
     category: 'reasoning',
@@ -138,6 +172,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'mistral-small3.2:24b',
+    vendor: 'mistral',
     title: 'Mistral Small 3.2',
     params: '24B',
     category: 'general',
@@ -147,6 +182,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'gemma3:27b',
+    vendor: 'google',
     title: 'Gemma 3',
     params: '27B',
     category: 'vision',
@@ -156,6 +192,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen3:30b',
+    vendor: 'qwen',
     title: 'Qwen3',
     params: '30B MoE',
     category: 'general',
@@ -165,6 +202,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'deepseek-r1:32b',
+    vendor: 'deepseek',
     title: 'DeepSeek-R1',
     params: '32B',
     category: 'reasoning',
@@ -174,6 +212,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen2.5-coder:32b',
+    vendor: 'qwen',
     title: 'Qwen2.5 Coder',
     params: '32B',
     category: 'coding',
@@ -183,6 +222,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'llama3.3:70b',
+    vendor: 'meta',
     title: 'Llama 3.3',
     params: '70B',
     category: 'general',
@@ -192,6 +232,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'gpt-oss:120b',
+    vendor: 'openai',
     title: 'GPT-OSS',
     params: '120B MoE',
     category: 'reasoning',

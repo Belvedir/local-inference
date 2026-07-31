@@ -10,7 +10,7 @@ function createWindow(): void {
     minWidth: 700,
     minHeight: 500,
     title: 'Local Inference',
-    backgroundColor: '#faf9f5',
+    backgroundColor: '#fafafa',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false

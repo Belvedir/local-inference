@@ -6,6 +6,7 @@ import {
   CuratedModel,
   DeviceInfo,
   Fit,
+  VENDORS,
   deviceLabel,
   fitFor,
   recommendedTag
@@ -40,6 +41,9 @@ export default function ModelPicker({ device, installed, pulling, onPull, compac
     })).filter((s) => s.models.length > 0)
   }, [filter, device.totalMemGB])
 
+  const providerCount = new Set(CURATED.map((m) => m.vendor)).size
+  const runnableCount = CURATED.filter((m) => fitFor(m, device.totalMemGB) !== 'no').length
+
   function renderCard(m: CuratedModel, fit: Fit) {
     const isInstalled = installed.some((name) => name.startsWith(m.tag))
     const isPulling = pulling?.tag === m.tag
@@ -50,6 +54,9 @@ export default function ModelPicker({ device, installed, pulling, onPull, compac
     return (
       <div key={m.tag} className={`card fit-${fit}${compact ? ' compact' : ''}`}>
         <div className="card-head">
+          <span className="card-logo">
+            <img src={VENDORS[m.vendor].logo} alt={VENDORS[m.vendor].label} />
+          </span>
           <span className="card-title">
             {m.title} <span className="card-params">{m.params}</span>
           </span>
@@ -62,7 +69,7 @@ export default function ModelPicker({ device, installed, pulling, onPull, compac
         {!compact && <div className="card-blurb">{m.blurb}</div>}
         <div className="card-foot">
           <span className="muted">
-            {m.downloadGB} GB download · needs ~{m.ramGB} GB memory
+            {m.downloadGB} GB download · ~{m.ramGB} GB memory
           </span>
           {isInstalled ? (
             <span className="installed-badge">Installed</span>
@@ -86,14 +93,29 @@ export default function ModelPicker({ device, installed, pulling, onPull, compac
   }
 
   return (
-    <div className="picker">
-      <div className="device-note">
-        <span className="device-chip">{deviceLabel(device)}</span>
-        <span className="muted">
-          {device.totalMemGB} GB memory — models needing up to ~
-          {Math.floor(device.totalMemGB * 0.75)} GB run well
-        </span>
-      </div>
+    <div className={`picker${compact ? ' compact' : ''}`}>
+      {compact ? (
+        <div className="device-note">
+          <span className="device-chip">{deviceLabel(device)}</span>
+          <span className="muted">{device.totalMemGB} GB memory</span>
+        </div>
+      ) : (
+        <div className="stats-row">
+          <span className="stat">
+            <b>{CURATED.length}</b> models
+          </span>
+          <span className="stat">
+            <b>{providerCount}</b> providers
+          </span>
+          <span className="stat">
+            <b>{runnableCount}</b> run on this device
+          </span>
+          <span className="stats-spacer" />
+          <span className="device-chip">
+            {deviceLabel(device)} · {device.totalMemGB} GB
+          </span>
+        </div>
+      )}
 
       <div className="filter-chips">
         {FILTERS.map((f) => (
