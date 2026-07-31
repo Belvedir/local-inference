@@ -1,4 +1,4 @@
-# Local Inference
+# Belvedir Local
 
 A desktop app for running AI models locally: download, open, pick a model, chat. Electron + React on the front, a bundled [Ollama](https://ollama.com) engine (MIT licensed) inside, with [llama.cpp](https://github.com/ggml-org/llama.cpp) and [vLLM](https://docs.vllm.ai) as switchable engines for models you point it at. All inference happens on your machine; nothing leaves it.
 
@@ -23,7 +23,7 @@ Grab the latest installer from [Releases](https://github.com/Belvedir/local-infe
 > **macOS note:** the app is not code-signed, so on first launch macOS will say it "can't be opened" or is "damaged." Right-click the app → **Open** → **Open**, or run:
 >
 > ```sh
-> xattr -cr "/Applications/Local Inference.app"
+> xattr -cr "/Applications/Belvedir Local.app"
 > ```
 
 No other installs needed — the inference engine is bundled. (Linux only: install [Ollama](https://ollama.com/download) separately.)

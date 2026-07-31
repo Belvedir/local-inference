@@ -1,6 +1,6 @@
 {
   "name": "local-model-inference",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Desktop app for running AI model inference locally via Ollama",
   "main": "./out/main/index.js",
   "author": "Zachary Yu",
@@ -33,14 +33,14 @@
   },
   "build": {
     "appId": "com.zacharyyu.localinference",
-    "productName": "Local Inference",
+    "productName": "Belvedir Local",
     "files": [
       "out/**/*"
     ],
     "directories": {
       "output": "release"
     },
-    "artifactName": "Local-Inference-${arch}.${ext}",
+    "artifactName": "Belvedir-Local-${arch}.${ext}",
     "publish": {
       "provider": "github",
       "owner": "Belvedir",

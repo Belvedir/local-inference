@@ -9,7 +9,7 @@ function createWindow(): void {
     height: 750,
     minWidth: 700,
     minHeight: 500,
-    title: 'Local Inference',
+    title: 'Belvedir Local',
     backgroundColor: '#fafafa',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
