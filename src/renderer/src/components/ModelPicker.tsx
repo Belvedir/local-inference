@@ -32,15 +32,23 @@ interface Props {
 
 export default function ModelPicker({ device, installed, pulling, onPull, onSelect, compact }: Props) {
   const [filter, setFilter] = useState<Category | 'all'>('all')
+  const [query, setQuery] = useState('')
   const recommended = recommendedTag(device.totalMemGB)
 
   const sections = useMemo(() => {
-    const visible = CURATED.filter((m) => filter === 'all' || m.category === filter)
+    const q = query.trim().toLowerCase()
+    const matches = (m: CuratedModel) =>
+      !q ||
+      [m.title, m.tag, m.params, VENDORS[m.vendor].label, CATEGORY_LABEL[m.category], m.blurb]
+        .join(' ')
+        .toLowerCase()
+        .includes(q)
+    const visible = CURATED.filter((m) => (filter === 'all' || m.category === filter) && matches(m))
     return SECTIONS.map((s) => ({
       ...s,
       models: visible.filter((m) => fitFor(m, device.totalMemGB) === s.fit)
     })).filter((s) => s.models.length > 0)
-  }, [filter, device.totalMemGB])
+  }, [filter, query, device.totalMemGB])
 
   const providerCount = new Set(CURATED.map((m) => m.vendor)).size
   const runnableCount = CURATED.filter((m) => fitFor(m, device.totalMemGB) !== 'no').length
@@ -126,17 +134,30 @@ export default function ModelPicker({ device, installed, pulling, onPull, onSele
         </div>
       )}
 
-      <div className="filter-chips">
-        {FILTERS.map((f) => (
-          <button
-            key={f}
-            className={`chip${filter === f ? ' active' : ''}`}
-            onClick={() => setFilter(f)}
-          >
-            {f === 'all' ? 'All' : CATEGORY_LABEL[f]}
-          </button>
-        ))}
+      <div className="picker-controls">
+        <input
+          type="search"
+          className="picker-search"
+          placeholder="Search models…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <div className="filter-chips">
+          {FILTERS.map((f) => (
+            <button
+              key={f}
+              className={`chip${filter === f ? ' active' : ''}`}
+              onClick={() => setFilter(f)}
+            >
+              {f === 'all' ? 'All' : CATEGORY_LABEL[f]}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {sections.length === 0 && (
+        <p className="muted">No models match “{query.trim()}”.</p>
+      )}
 
       {sections.map((s) => (
         <section key={s.fit} className="picker-section">

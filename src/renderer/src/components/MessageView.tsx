@@ -23,14 +23,18 @@ export default function MessageView({ message, modelName, isLast, streaming, onR
 
   return (
     <div className={`msg ${message.role}`}>
-      <div className="msg-role">{isUser ? 'You' : modelName}</div>
+      {!isUser && <div className="msg-role">{modelName}</div>}
       <div className="msg-content">
         {isUser ? (
           message.content
         ) : message.content ? (
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
         ) : streaming && isLast ? (
-          '…'
+          <span className="typing">
+            <i />
+            <i />
+            <i />
+          </span>
         ) : (
           ''
         )}

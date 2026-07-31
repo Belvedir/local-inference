@@ -23,6 +23,16 @@ import {
 import { DeviceInfo } from './models'
 import ModelPicker from './components/ModelPicker'
 import MessageView from './components/MessageView'
+import belvedirMark from './assets/belvedir-mark.svg'
+
+function Brand() {
+  return (
+    <div className="brand">
+      <img src={belvedirMark} alt="" />
+      <span>Belvedir</span>
+    </div>
+  )
+}
 
 type AppStatus = 'checking' | 'ready' | 'not-installed' | 'failed-to-start' | 'needs-model'
 
@@ -322,6 +332,7 @@ export default function App() {
   if (engine === 'ollama' && (!picked || models.length === 0)) {
     return (
       <div className="onboarding">
+        <Brand />
         <h1>{models.length === 0 ? 'Pick a model to get started' : 'Pick a model'}</h1>
         <p className="muted">
           Everything runs on this machine, nothing leaves it. You can switch models later.
@@ -344,7 +355,7 @@ export default function App() {
   return (
     <div className="layout">
       <aside className="sidebar">
-        <h1>Local Inference</h1>
+        <Brand />
 
         <button onClick={() => setActiveId(null)}>New chat</button>
 
@@ -453,17 +464,29 @@ export default function App() {
       </aside>
 
       <main className="chat">
+        <header className="chat-head">
+          <div className="chat-head-title">{active?.title ?? 'New chat'}</div>
+          <div className="chat-head-meta">
+            <span className="model-pill">{selectedModel}</span>
+            <span className="local-pill">
+              <span className="local-dot" />
+              Local · {engineDef.label}
+            </span>
+          </div>
+        </header>
+
         <div className="messages" ref={scrollRef}>
           {messages.length === 0 && (
             <div className="empty-hint">
-              <p>
-                Chatting with {selectedModel} via {engineDef.label}. Everything stays on this
-                machine.
+              <h2>What should we work on?</h2>
+              <p className="muted">
+                {selectedModel} is running on this machine. Nothing leaves your device.
               </p>
               <div className="starters">
                 {STARTERS.map((s) => (
-                  <button key={s} className="ghost" onClick={() => send(s)}>
+                  <button key={s} className="starter" onClick={() => send(s)}>
                     {s}
+                    <span className="starter-arrow">→</span>
                   </button>
                 ))}
               </div>
@@ -484,26 +507,31 @@ export default function App() {
         {error && <div className="error banner">{error}</div>}
 
         <div className="composer">
-          <textarea
-            placeholder="Send a message…"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault()
-                send()
-              }
-            }}
-            rows={3}
-            autoFocus
-          />
-          {streaming ? (
-            <button onClick={() => abortRef.current?.abort()}>Stop</button>
-          ) : (
-            <button onClick={() => send()} disabled={!input.trim() || !selectedModel}>
-              Send
-            </button>
-          )}
+          <div className="composer-box">
+            <textarea
+              placeholder={`Message ${selectedModel}…`}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault()
+                  send()
+                }
+              }}
+              rows={2}
+              autoFocus
+            />
+            <div className="composer-bar">
+              <span className="composer-hint">Enter to send · Shift+Enter for a new line</span>
+              {streaming ? (
+                <button onClick={() => abortRef.current?.abort()}>Stop</button>
+              ) : (
+                <button onClick={() => send()} disabled={!input.trim() || !selectedModel}>
+                  Send
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </main>
     </div>
