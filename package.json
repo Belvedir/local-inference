@@ -42,8 +42,8 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "Fractal-Machine-Research",
-      "repo": "local-model-inference"
+      "owner": "Belvedir",
+      "repo": "local-inference"
     },
     "mac": {
       "target": [
