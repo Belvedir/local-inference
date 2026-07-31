@@ -64,6 +64,12 @@
           "from": "resources/ollama/darwin",
           "to": "ollama"
         }
+      ],
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "binaries": [
+        "Contents/Resources/ollama/ollama"
       ]
     },
     "win": {

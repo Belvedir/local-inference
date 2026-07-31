@@ -41,6 +41,20 @@ git push && git push --tags
 
 CI builds installers for macOS (arm64 + Intel), Windows, and Linux and attaches them to a GitHub Release. Note: electron-builder creates the release as a **draft** — review it on GitHub and click Publish.
 
+### Signing & notarization
+
+macOS builds are ad-hoc signed by default (users must approve the app under System Settings → Privacy & Security, or clear quarantine with `xattr`). To ship builds that open with **no warnings**, add these repo secrets and the next tag is Developer-ID-signed and notarized automatically:
+
+| Secret | Value |
+| --- | --- |
+| `MAC_CERT_P12` | Base64 of the "Developer ID Application" certificate exported as .p12 (`base64 -i cert.p12`) |
+| `MAC_CERT_PASSWORD` | The .p12 export password |
+| `APPLE_API_KEY_P8` | Contents of an App Store Connect API key (.p8, role Developer or Admin) |
+| `APPLE_API_KEY_ID` | That key's ID |
+| `APPLE_API_ISSUER` | The App Store Connect issuer ID |
+
+All five come from an [Apple Developer Program](https://developer.apple.com/programs/) membership: the certificate from Xcode/developer.apple.com → Certificates, the API key from App Store Connect → Users and Access → Integrations.
+
 ## Packaging locally
 
 ```sh

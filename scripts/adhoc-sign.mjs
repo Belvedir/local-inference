@@ -12,6 +12,10 @@ import path from 'node:path'
 
 export default async function adhocSign(context) {
   if (context.electronPlatformName !== 'darwin') return
+  // A real certificate is in play (CI got the secrets): electron-builder
+  // already Developer-ID-signed and notarized the bundle. Re-signing ad-hoc
+  // here would destroy that signature.
+  if (process.env.CSC_LINK) return
   const appPath = path.join(
     context.appOutDir,
     `${context.packager.appInfo.productFilename}.app`

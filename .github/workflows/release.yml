@@ -30,10 +30,29 @@ jobs:
 
       - run: npm run build
 
+      # Developer ID signing + notarization turn ON automatically once the
+      # Apple secrets exist (MAC_CERT_P12, MAC_CERT_PASSWORD, APPLE_API_KEY_P8,
+      # APPLE_API_KEY_ID, APPLE_API_ISSUER — see README). Without them the
+      # build ships ad-hoc signed exactly as before.
+      - name: Enable notarization when Apple credentials exist
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: |
+          if [ -n "${{ secrets.APPLE_API_KEY_P8 }}" ]; then
+            printf '%s' "${{ secrets.APPLE_API_KEY_P8 }}" > "$RUNNER_TEMP/AuthKey.p8"
+            echo "APPLE_API_KEY=$RUNNER_TEMP/AuthKey.p8" >> "$GITHUB_ENV"
+            echo "EB_NOTARIZE=-c.mac.notarize=true" >> "$GITHUB_ENV"
+          fi
+
       - name: Build and publish installers
-        run: npx electron-builder --publish always
+        shell: bash
+        run: npx electron-builder --publish always $EB_NOTARIZE
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # No Apple Developer cert — ship unsigned, don't let electron-builder
-          # pick up a stray keychain identity on the runner.
+          # Explicit cert only (empty = ship ad-hoc signed); never let
+          # electron-builder pick up a stray keychain identity on the runner.
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+          CSC_LINK: ${{ secrets.MAC_CERT_P12 }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CERT_PASSWORD }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
