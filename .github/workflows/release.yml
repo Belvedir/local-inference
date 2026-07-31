@@ -25,11 +25,14 @@ jobs:
 
       - run: npm ci
 
-      - name: Bundle engine binaries
-        run: |
-          node scripts/fetch-ollama.mjs
-          node scripts/fetch-llamacpp.mjs
-        shell: bash
+      # Default shells on purpose: forcing bash on Windows puts Git's GNU tar
+      # first on PATH, which reads "D:\..." as a remote host and breaks the
+      # ollama zip extraction (bsdtar under pwsh handles it).
+      - name: Bundle Ollama binary
+        run: node scripts/fetch-ollama.mjs
+
+      - name: Bundle llama.cpp binary
+        run: node scripts/fetch-llamacpp.mjs
 
       - run: npm run build
 
