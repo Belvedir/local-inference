@@ -10,8 +10,12 @@ const api = {
   ensureEngine: (engine: string, model?: string): Promise<EnsureResult> =>
     ipcRenderer.invoke('engine:ensure', engine, model),
   openExternal: (url: string): Promise<void> => ipcRenderer.invoke('open-external', url),
-  systemInfo: (): Promise<{ totalMemGB: number; arch: string; platform: string }> =>
-    ipcRenderer.invoke('system-info')
+  systemInfo: (): Promise<{
+    totalMemGB: number
+    arch: string
+    platform: string
+    cpuModel: string
+  }> => ipcRenderer.invoke('system-info')
 }
 
 contextBridge.exposeInMainWorld('api', api)
