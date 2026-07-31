@@ -1,6 +1,6 @@
 # Local Inference
 
-A desktop app for running AI models locally — download, open, pick a model, chat. Electron + React on the front, a bundled [Ollama](https://ollama.com) engine (MIT licensed) inside — all inference happens on your machine, nothing leaves it.
+A desktop app for running AI models locally: download, open, pick a model, chat. Electron + React on the front, a bundled [Ollama](https://ollama.com) engine (MIT licensed) inside, with [llama.cpp](https://github.com/ggml-org/llama.cpp) and [vLLM](https://docs.vllm.ai) as switchable engines for models you point it at. All inference happens on your machine; nothing leaves it.
 
 ## How it works
 
@@ -18,7 +18,7 @@ npm run dev            # launches Electron with hot reload
 
 ## Download & install
 
-Grab the latest installer from [Releases](https://github.com/Fractal-Machine-Research/local-model-inference/releases) — `.dmg` for macOS, `.exe` for Windows, `.AppImage` for Linux.
+Grab the latest installer from [Releases](https://github.com/Belvedir/local-inference/releases) — `.dmg` for macOS, `.exe` for Windows, `.AppImage` for Linux.
 
 > **macOS note:** the app is not code-signed, so on first launch macOS will say it "can't be opened" or is "damaged." Right-click the app → **Open** → **Open**, or run:
 >
