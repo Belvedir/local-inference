@@ -23,7 +23,10 @@ const OLLAMA_PORT = 11434
 // llama-server (default 8080) or vllm (default 8000). Those defaults are
 // still probed first and adopted if something healthy is already there.
 const ENGINE_PORTS: Record<Exclude<EngineId, 'ollama'>, { external: number; spawn: number }> = {
-  llamacpp: { external: 8080, spawn: 11464 },
+  // llama.cpp is the bundled default engine (v0.5.0): serve on its standard
+  // port so agent-facing docs have one stable endpoint. A user's own healthy
+  // llama-server on 8080 is adopted before we ever spawn, so no clobbering.
+  llamacpp: { external: 8080, spawn: 8080 },
   vllm: { external: 8000, spawn: 11465 }
 }
 
@@ -90,6 +93,23 @@ function bundledOllama(): string | null {
   return existsSync(p) ? p : null
 }
 
+// The llama.cpp server we ship inside the app (resources/llamacpp/<platform-
+// arch>/ in dev, process.resourcesPath/llamacpp/ when packaged), alongside
+// its dylibs/dlls — llama-server resolves them relative to itself.
+function bundledLlamaServer(): string | null {
+  const exe = process.platform === 'win32' ? 'llama-server.exe' : 'llama-server'
+  const p = app.isPackaged
+    ? join(process.resourcesPath, 'llamacpp', exe)
+    : join(
+        app.getAppPath(),
+        'resources',
+        'llamacpp',
+        `${process.platform}-${process.arch}`,
+        exe
+      )
+  return existsSync(p) ? p : null
+}
+
 function knownBinary(engine: EngineId): string | null {
   for (const p of KNOWN_PATHS[engine]) {
     if (existsSync(p)) return p
@@ -104,7 +124,12 @@ function binaryOnPath(name: string): Promise<string | null> {
 }
 
 function launch(engine: EngineId, bin: string, args: string[], port: number, model?: string): void {
-  const proc = spawn(bin, args, { stdio: ['ignore', 'ignore', 'pipe'] })
+  // Bundled llama-server on Linux finds its .so files next to the binary.
+  const env =
+    engine === 'llamacpp' && process.platform === 'linux'
+      ? { ...process.env, LD_LIBRARY_PATH: join(bin, '..') }
+      : process.env
+  const proc = spawn(bin, args, { stdio: ['ignore', 'ignore', 'pipe'], env })
   const entry: Spawned = { engine, proc, model, port, stderrTail: '' }
   proc.stderr?.on('data', (chunk: Buffer) => {
     entry.stderrTail = (entry.stderrTail + chunk.toString()).slice(-2000)
@@ -167,7 +192,10 @@ async function ensureOpenAiEngine(
   }
 
   const binName = engine === 'llamacpp' ? 'llama-server' : 'vllm'
-  const bin = knownBinary(engine) ?? (await binaryOnPath(binName))
+  const bin =
+    (engine === 'llamacpp' ? bundledLlamaServer() : null) ??
+    knownBinary(engine) ??
+    (await binaryOnPath(binName))
   const baseUrl = url(ports.spawn)
   if (!bin) return { status: 'not-installed', baseUrl }
   if (!model) return { status: 'needs-model', baseUrl }

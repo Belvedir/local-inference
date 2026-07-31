@@ -25,8 +25,11 @@ jobs:
 
       - run: npm ci
 
-      - name: Bundle Ollama binary
-        run: node scripts/fetch-ollama.mjs
+      - name: Bundle engine binaries
+        run: |
+          node scripts/fetch-ollama.mjs
+          node scripts/fetch-llamacpp.mjs
+        shell: bash
 
       - run: npm run build
 

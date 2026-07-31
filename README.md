@@ -1,10 +1,10 @@
 # Belvedir Local
 
-A desktop app for running AI models locally: download, open, pick a model, chat. Electron + React on the front, a bundled [Ollama](https://ollama.com) engine (MIT licensed) inside, with [llama.cpp](https://github.com/ggml-org/llama.cpp) and [vLLM](https://docs.vllm.ai) as switchable engines for models you point it at. All inference happens on your machine; nothing leaves it.
+A desktop app for running AI models locally: download, open, pick a model, chat. Electron + React on the front, a bundled [llama.cpp](https://github.com/ggml-org/llama.cpp) server (MIT licensed) as the default engine — the curated picker maps to HuggingFace GGUF repos that download on first launch — with a bundled [Ollama](https://ollama.com) and [vLLM](https://docs.vllm.ai) as switchable alternatives. All inference happens on your machine; nothing leaves it.
 
 ## How it works
 
-- The Ollama server binary ships **inside the app** (fetched at build time by `scripts/fetch-ollama.mjs`, bundled via electron-builder `extraResources`). On launch the app starts it automatically; if you already run your own Ollama, the app uses that instead and shares its models. On Linux (no standalone Ollama build) it falls back to a system install.
+- The llama.cpp server (`scripts/fetch-llamacpp.mjs`) and the Ollama binary (`scripts/fetch-ollama.mjs`) ship **inside the app**, fetched at build time and bundled via electron-builder `extraResources`. On launch the app starts the selected engine automatically — llama.cpp serves on its standard `127.0.0.1:8080`, and a llama-server or Ollama you already run is adopted instead of clobbered.
 - First run shows a guided model picker: curated models with plain-English descriptions and RAM-aware fit badges ("Runs great" / "Will be slow" / "Won't fit") computed from your machine's memory, with one-click downloads.
 - Chats render markdown, persist across restarts, and show tokens/sec after each reply. Responses stream token-by-token from Ollama's `/api/chat` endpoint.
 

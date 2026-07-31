@@ -26,7 +26,9 @@ const ENGINE_MODELS_KEY = 'engine-models-v1'
 
 export function loadEngine(): EngineId {
   const raw = localStorage.getItem(ENGINE_KEY)
-  return raw && raw in ENGINES ? (raw as EngineId) : 'ollama'
+  // llama.cpp is the default engine since v0.5.0 (bundled llama-server);
+  // existing users keep whatever they had saved.
+  return raw && raw in ENGINES ? (raw as EngineId) : 'llamacpp'
 }
 
 export function saveEngine(engine: EngineId): void {

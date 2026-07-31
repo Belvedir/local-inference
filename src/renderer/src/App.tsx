@@ -20,7 +20,7 @@ import {
   saveEngine,
   saveEngineModels
 } from './storage'
-import { DeviceInfo } from './models'
+import { DeviceInfo, ggufFor } from './models'
 import ModelPicker from './components/ModelPicker'
 import MessageView from './components/MessageView'
 import belvedirMark from './assets/belvedir-mark.svg'
@@ -316,7 +316,46 @@ export default function App() {
     )
   }
 
-  // llama.cpp / vLLM serve one model chosen at launch, so ask for it once.
+  // llama.cpp (the default): first run opens on the curated picker, exactly
+  // like Ollama used to — picking restarts the server with the model's GGUF
+  // repo, which llama-server downloads and caches on launch.
+  if (status === 'needs-model' && engine === 'llamacpp') {
+    return (
+      <div className="onboarding">
+        <Brand />
+        <h1>Pick a model to get started</h1>
+        <p className="muted onboarding-intro">
+          A local inference provider by Belvedir: open models download once, then run entirely on
+          your own hardware. No API keys, no per-token costs, and your prompts and conversations
+          never leave this machine. Pick a model that fits your device; it downloads on first
+          launch.
+        </p>
+        <ModelPicker
+          device={device}
+          installed={[]}
+          pulling={null}
+          onPull={() => {}}
+          selectAll
+          onSelect={(tag) => loadEngineModel(ggufFor(tag))}
+        />
+        <div className="pull-row onboarding-custom">
+          <input
+            placeholder={engineDef.modelPlaceholder}
+            value={pullName}
+            onChange={(e) => setPullName(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && loadEngineModel(pullName.trim())}
+          />
+          <button onClick={() => loadEngineModel(pullName.trim())} disabled={!pullName.trim()}>
+            Load
+          </button>
+        </div>
+        {error && <div className="error banner">{error}</div>}
+        <FooterLinks />
+      </div>
+    )
+  }
+
+  // vLLM serves one model chosen at launch, so ask for it once.
   if (status === 'needs-model') {
     return (
       <div className="center-screen">
@@ -475,6 +514,17 @@ export default function App() {
               {engineDef.label} serves one model at a time. Loading a new one restarts the
               server.
             </p>
+            {engine === 'llamacpp' && (
+              <ModelPicker
+                device={device}
+                installed={[]}
+                pulling={null}
+                onPull={() => {}}
+                selectAll
+                compact
+                onSelect={(tag) => loadEngineModel(ggufFor(tag))}
+              />
+            )}
             <div className="pull-row">
               <input
                 placeholder={engineDef.modelPlaceholder}

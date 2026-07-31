@@ -28,9 +28,20 @@ interface Props {
   onPull: (tag: string) => void
   onSelect?: (name: string) => void
   compact?: boolean
+  /** llama.cpp mode: every card is directly runnable (the engine downloads
+   * the GGUF on first launch), so there's no installed/pull state here. */
+  selectAll?: boolean
 }
 
-export default function ModelPicker({ device, installed, pulling, onPull, onSelect, compact }: Props) {
+export default function ModelPicker({
+  device,
+  installed,
+  pulling,
+  onPull,
+  onSelect,
+  compact,
+  selectAll
+}: Props) {
   const [filter, setFilter] = useState<Category | 'all'>('all')
   const [query, setQuery] = useState('')
   const recommended = recommendedTag(device.totalMemGB)
@@ -81,7 +92,13 @@ export default function ModelPicker({ device, installed, pulling, onPull, onSele
           <span className="muted">
             {m.downloadGB} GB download · ~{m.ramGB} GB memory
           </span>
-          {isInstalled ? (
+          {selectAll ? (
+            fit === 'no' ? (
+              <span className="toobig-badge">Too big</span>
+            ) : (
+              <button onClick={() => onSelect?.(m.tag)}>Run</button>
+            )
+          ) : isInstalled ? (
             onSelect ? (
               <span className="foot-actions">
                 <span className="installed-badge">Installed</span>

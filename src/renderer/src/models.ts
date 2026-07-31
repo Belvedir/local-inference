@@ -29,6 +29,10 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 
 export interface CuratedModel {
   tag: string
+  /** The same model as a HuggingFace GGUF repo (repo[:quant]) for
+   * llama-server -hf, which downloads and caches it on first launch. Repos
+   * verified against the HF API July 31 2026. */
+  gguf: string
   title: string
   params: string
   vendor: Vendor
@@ -42,6 +46,7 @@ export interface CuratedModel {
 export const CURATED: CuratedModel[] = [
   {
     tag: 'llama3.2:1b',
+    gguf: 'bartowski/Llama-3.2-1B-Instruct-GGUF:Q4_K_M',
     vendor: 'meta',
     title: 'Llama 3.2',
     params: '1B',
@@ -52,6 +57,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'llama3.2:3b',
+    gguf: 'bartowski/Llama-3.2-3B-Instruct-GGUF:Q4_K_M',
     vendor: 'meta',
     title: 'Llama 3.2',
     params: '3B',
@@ -62,6 +68,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen3:4b',
+    gguf: 'Qwen/Qwen3-4B-GGUF:Q4_K_M',
     vendor: 'qwen',
     title: 'Qwen3',
     params: '4B',
@@ -72,6 +79,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'gemma3:4b',
+    gguf: 'ggml-org/gemma-3-4b-it-GGUF',
     vendor: 'google',
     title: 'Gemma 3',
     params: '4B',
@@ -82,6 +90,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'llama3.1:8b',
+    gguf: 'bartowski/Meta-Llama-3.1-8B-Instruct-GGUF:Q4_K_M',
     vendor: 'meta',
     title: 'Llama 3.1',
     params: '8B',
@@ -92,6 +101,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen2.5-coder:7b',
+    gguf: 'bartowski/Qwen2.5-Coder-7B-Instruct-GGUF:Q4_K_M',
     vendor: 'qwen',
     title: 'Qwen2.5 Coder',
     params: '7B',
@@ -102,6 +112,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'deepseek-r1:8b',
+    gguf: 'unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF:Q4_K_M',
     vendor: 'deepseek',
     title: 'DeepSeek-R1',
     params: '8B',
@@ -112,6 +123,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen3:8b',
+    gguf: 'Qwen/Qwen3-8B-GGUF:Q4_K_M',
     vendor: 'qwen',
     title: 'Qwen3',
     params: '8B',
@@ -122,6 +134,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'gemma3:12b',
+    gguf: 'ggml-org/gemma-3-12b-it-GGUF',
     vendor: 'google',
     title: 'Gemma 3',
     params: '12B',
@@ -132,6 +145,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'phi4:14b',
+    gguf: 'bartowski/phi-4-GGUF:Q4_K_M',
     vendor: 'microsoft',
     title: 'Phi-4',
     params: '14B',
@@ -142,6 +156,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen3:14b',
+    gguf: 'Qwen/Qwen3-14B-GGUF:Q4_K_M',
     vendor: 'qwen',
     title: 'Qwen3',
     params: '14B',
@@ -152,6 +167,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen2.5-coder:14b',
+    gguf: 'bartowski/Qwen2.5-Coder-14B-Instruct-GGUF:Q4_K_M',
     vendor: 'qwen',
     title: 'Qwen2.5 Coder',
     params: '14B',
@@ -162,6 +178,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'gpt-oss:20b',
+    gguf: 'ggml-org/gpt-oss-20b-GGUF:MXFP4',
     vendor: 'openai',
     title: 'GPT-OSS',
     params: '20B',
@@ -172,6 +189,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'mistral-small3.2:24b',
+    gguf: 'unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF:Q4_K_M',
     vendor: 'mistral',
     title: 'Mistral Small 3.2',
     params: '24B',
@@ -182,6 +200,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'gemma3:27b',
+    gguf: 'ggml-org/gemma-3-27b-it-GGUF',
     vendor: 'google',
     title: 'Gemma 3',
     params: '27B',
@@ -192,6 +211,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen3:30b',
+    gguf: 'Qwen/Qwen3-30B-A3B-GGUF:Q4_K_M',
     vendor: 'qwen',
     title: 'Qwen3',
     params: '30B MoE',
@@ -202,6 +222,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'deepseek-r1:32b',
+    gguf: 'bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF:Q4_K_M',
     vendor: 'deepseek',
     title: 'DeepSeek-R1',
     params: '32B',
@@ -212,6 +233,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'qwen2.5-coder:32b',
+    gguf: 'bartowski/Qwen2.5-Coder-32B-Instruct-GGUF:Q4_K_M',
     vendor: 'qwen',
     title: 'Qwen2.5 Coder',
     params: '32B',
@@ -222,6 +244,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'llama3.3:70b',
+    gguf: 'bartowski/Llama-3.3-70B-Instruct-GGUF:Q4_K_M',
     vendor: 'meta',
     title: 'Llama 3.3',
     params: '70B',
@@ -232,6 +255,7 @@ export const CURATED: CuratedModel[] = [
   },
   {
     tag: 'gpt-oss:120b',
+    gguf: 'ggml-org/gpt-oss-120b-GGUF:MXFP4',
     vendor: 'openai',
     title: 'GPT-OSS',
     params: '120B MoE',
@@ -267,6 +291,10 @@ export function fitFor(model: CuratedModel, totalMemGB: number): Fit {
   if (model.ramGB <= totalMemGB * 0.75) return 'great'
   if (model.ramGB <= totalMemGB) return 'slow'
   return 'no'
+}
+
+export function ggufFor(tag: string): string {
+  return CURATED.find((m) => m.tag === tag)?.gguf ?? tag
 }
 
 export function recommendedTag(totalMemGB: number): string {

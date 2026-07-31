@@ -1,6 +1,6 @@
 {
   "name": "local-model-inference",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Desktop app for running AI model inference locally via Ollama",
   "main": "./out/main/index.js",
   "author": "Zachary Yu",
@@ -10,7 +10,8 @@
     "build": "electron-vite build",
     "typecheck": "tsc --noEmit -p tsconfig.node.json --composite false && tsc --noEmit -p tsconfig.web.json --composite false",
     "fetch-ollama": "node scripts/fetch-ollama.mjs",
-    "dist": "node scripts/fetch-ollama.mjs && electron-vite build && electron-builder"
+    "dist": "node scripts/fetch-ollama.mjs && node scripts/fetch-llamacpp.mjs && electron-vite build && electron-builder",
+    "fetch-llamacpp": "node scripts/fetch-llamacpp.mjs"
   },
   "dependencies": {
     "@lobehub/icons-static-svg": "^1.94.0",
@@ -63,6 +64,10 @@
         {
           "from": "resources/ollama/darwin",
           "to": "ollama"
+        },
+        {
+          "from": "resources/llamacpp/darwin-${arch}",
+          "to": "llamacpp"
         }
       ],
       "hardenedRuntime": true,
@@ -81,6 +86,10 @@
         {
           "from": "resources/ollama/win32",
           "to": "ollama"
+        },
+        {
+          "from": "resources/llamacpp/win32-x64",
+          "to": "llamacpp"
         }
       ]
     },
@@ -89,7 +98,13 @@
       "target": [
         "AppImage"
       ],
-      "category": "Development"
+      "category": "Development",
+      "extraResources": [
+        {
+          "from": "resources/llamacpp/linux-x64",
+          "to": "llamacpp"
+        }
+      ]
     },
     "afterSign": "scripts/adhoc-sign.mjs"
   }

@@ -22,7 +22,8 @@ export const ENGINES: Record<EngineId, EngineDef> = {
   llamacpp: {
     label: 'llama.cpp',
     managedModels: false,
-    installHint: 'llama-server was not found. Install llama.cpp (e.g. `brew install llama.cpp`) and retry.',
+    installHint:
+      'The bundled llama.cpp engine failed to launch. Installing llama.cpp separately (e.g. `brew install llama.cpp`) also works; the app will find it.',
     installUrl: 'https://github.com/ggml-org/llama.cpp',
     modelPlaceholder: 'HF GGUF repo or local .gguf path',
     modelHint:
