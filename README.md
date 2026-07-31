@@ -20,11 +20,13 @@ npm run dev            # launches Electron with hot reload
 
 Grab the latest installer from [Releases](https://github.com/Belvedir/local-inference/releases) — `.dmg` for macOS, `.exe` for Windows, `.AppImage` for Linux.
 
-> **macOS note:** the app is ad-hoc signed (no Apple Developer certificate), so on first launch macOS warns about an unidentified developer. Right-click the app → **Open** → **Open**, or run:
+> **macOS note:** the app is ad-hoc signed (no Apple Developer certificate), so macOS blocks the first launch ("Apple could not verify..."). On macOS 15+ the old right-click → Open bypass is gone; click **Done** (not Move to Trash), then either run
 >
 > ```sh
 > xattr -cr "/Applications/Belvedir Local.app"
 > ```
+>
+> and reopen it, or approve it under **System Settings → Privacy & Security → Open Anyway**.
 
 No other installs needed — the inference engine is bundled. (Linux only: install [Ollama](https://ollama.com/download) separately.)
 
