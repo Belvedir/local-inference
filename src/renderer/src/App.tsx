@@ -359,7 +359,7 @@ export default function App() {
         <p className="muted onboarding-intro">
           A local inference provider by Belvedir: open models download once, then run entirely on
           your own hardware. No API keys, no per-token costs, and your prompts and conversations
-          never leave this machine. Pick a model that fits your device to get started — you can
+          never leave this machine. Pick a model that fits your device to get started. You can
           switch or add more anytime.
         </p>
         <ModelPicker
