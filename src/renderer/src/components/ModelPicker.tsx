@@ -15,7 +15,7 @@ import type { PullProgress } from '../ollama'
 
 const SECTIONS: { fit: Fit; label: string }[] = [
   { fit: 'great', label: 'Runs well on this device' },
-  { fit: 'slow', label: 'Tight fit — will be slow' },
+  { fit: 'slow', label: 'Tight fit, will be slow' },
   { fit: 'no', label: 'Needs more memory than this device has' }
 ]
 
@@ -26,10 +26,11 @@ interface Props {
   installed: string[]
   pulling: { tag: string; progress: PullProgress } | null
   onPull: (tag: string) => void
+  onSelect?: (name: string) => void
   compact?: boolean
 }
 
-export default function ModelPicker({ device, installed, pulling, onPull, compact }: Props) {
+export default function ModelPicker({ device, installed, pulling, onPull, onSelect, compact }: Props) {
   const [filter, setFilter] = useState<Category | 'all'>('all')
   const recommended = recommendedTag(device.totalMemGB)
 
@@ -45,7 +46,8 @@ export default function ModelPicker({ device, installed, pulling, onPull, compac
   const runnableCount = CURATED.filter((m) => fitFor(m, device.totalMemGB) !== 'no').length
 
   function renderCard(m: CuratedModel, fit: Fit) {
-    const isInstalled = installed.some((name) => name.startsWith(m.tag))
+    const installedName = installed.find((name) => name.startsWith(m.tag))
+    const isInstalled = installedName !== undefined
     const isPulling = pulling?.tag === m.tag
     const pct =
       isPulling && pulling.progress.total && pulling.progress.completed
@@ -72,7 +74,14 @@ export default function ModelPicker({ device, installed, pulling, onPull, compac
             {m.downloadGB} GB download · ~{m.ramGB} GB memory
           </span>
           {isInstalled ? (
-            <span className="installed-badge">Installed</span>
+            onSelect ? (
+              <span className="foot-actions">
+                <span className="installed-badge">Installed</span>
+                <button onClick={() => onSelect(installedName)}>Use</button>
+              </span>
+            ) : (
+              <span className="installed-badge">Installed</span>
+            )
           ) : isPulling ? (
             <span className="muted">{pct !== null ? `${pct}%` : pulling.progress.status}</span>
           ) : fit === 'no' ? (

@@ -1,6 +1,6 @@
 import metaLogo from '@lobehub/icons-static-svg/icons/meta-color.svg'
 import qwenLogo from '@lobehub/icons-static-svg/icons/qwen-color.svg'
-import gemmaLogo from '@lobehub/icons-static-svg/icons/gemma-color.svg'
+import googleLogo from '@lobehub/icons-static-svg/icons/google-color.svg'
 import deepseekLogo from '@lobehub/icons-static-svg/icons/deepseek-color.svg'
 import microsoftLogo from '@lobehub/icons-static-svg/icons/microsoft-color.svg'
 import openaiLogo from '@lobehub/icons-static-svg/icons/openai.svg'
@@ -13,7 +13,7 @@ export type Vendor = 'meta' | 'qwen' | 'google' | 'deepseek' | 'microsoft' | 'op
 export const VENDORS: Record<Vendor, { label: string; logo: string }> = {
   meta: { label: 'Meta', logo: metaLogo },
   qwen: { label: 'Qwen', logo: qwenLogo },
-  google: { label: 'Google', logo: gemmaLogo },
+  google: { label: 'Google', logo: googleLogo },
   deepseek: { label: 'DeepSeek', logo: deepseekLogo },
   microsoft: { label: 'Microsoft', logo: microsoftLogo },
   openai: { label: 'OpenAI', logo: openaiLogo },
@@ -46,7 +46,7 @@ export const CURATED: CuratedModel[] = [
     title: 'Llama 3.2',
     params: '1B',
     category: 'general',
-    blurb: 'Tiny and instant — runs on almost anything',
+    blurb: 'Tiny and instant, runs on almost anything',
     downloadGB: 1.3,
     ramGB: 2
   },
@@ -86,7 +86,7 @@ export const CURATED: CuratedModel[] = [
     title: 'Llama 3.1',
     params: '8B',
     category: 'general',
-    blurb: 'Fast all-rounder — a great first model',
+    blurb: 'Fast all-rounder and a great first model',
     downloadGB: 4.9,
     ramGB: 8
   },
@@ -196,7 +196,7 @@ export const CURATED: CuratedModel[] = [
     title: 'Qwen3',
     params: '30B MoE',
     category: 'general',
-    blurb: 'Best overall quality — fast for its size (MoE)',
+    blurb: 'Best overall quality, fast for its size (MoE)',
     downloadGB: 19,
     ramGB: 23
   },
@@ -226,7 +226,7 @@ export const CURATED: CuratedModel[] = [
     title: 'Llama 3.3',
     params: '70B',
     category: 'general',
-    blurb: 'Flagship quality — needs a big machine',
+    blurb: 'Flagship quality, needs a big machine',
     downloadGB: 43,
     ramGB: 48
   },
@@ -236,7 +236,7 @@ export const CURATED: CuratedModel[] = [
     title: 'GPT-OSS',
     params: '120B MoE',
     category: 'reasoning',
-    blurb: "OpenAI's largest open model — workstation class",
+    blurb: "OpenAI's largest open model, workstation class",
     downloadGB: 65,
     ramGB: 80
   }

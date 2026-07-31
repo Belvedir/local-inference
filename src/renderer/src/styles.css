@@ -4,28 +4,22 @@
 }
 
 :root {
-  --bg: #fafafa;
-  --panel: #ffffff;
-  --border: #ececf0;
-  --border-strong: #dcdce2;
-  --text: #1a1a1e;
-  --muted: #8a8a94;
-  --accent: #7c3aed;
-  --accent-hover: #6d28d9;
-  --accent-soft: #f4effe;
-  --code-bg: #f4f4f5;
-  --good: #17835c;
-  --good-soft: #e9f7f0;
-  --warn: #9a6b00;
-  --warn-soft: #fdf5e3;
-  --bad: #c0392b;
-  --bad-soft: #fdefed;
-  --radius: 14px;
-  --radius-sm: 9px;
-  --shadow: 0 1px 3px rgba(20, 20, 24, 0.04);
-  --shadow-hover: 0 3px 12px rgba(20, 20, 24, 0.07);
-  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, 'Helvetica Neue',
+  --bg: #f6f5f2;
+  --panel: #fdfcfa;
+  --border: #e0ded8;
+  --border-strong: #c9c6bf;
+  --text: #1a1a1a;
+  --muted: #6b6763;
+  --light-muted: #b3b0aa;
+  --ink: #1a1a1a;
+  --ink-hover: #000000;
+  --ink-soft: #eceae5;
+  --code-bg: #eceae5;
+  --radius: 8px;
+  --radius-sm: 6px;
+  --sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue',
     sans-serif;
+  --serif: 'Newsreader', 'Times New Roman', Times, Georgia, serif;
   --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
 }
 
@@ -41,40 +35,46 @@ body {
   height: 100vh;
 }
 
+h1,
+h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
 button {
-  background: var(--accent);
-  color: #fff;
-  border: 1px solid var(--accent);
-  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-sm);
   padding: 7px 16px;
   font-size: 12px;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
 button:hover:not(:disabled) {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
+  background: var(--ink-hover);
+  border-color: var(--ink-hover);
 }
 
 button:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: default;
 }
 
 button.ghost {
-  background: var(--panel);
+  background: transparent;
   color: var(--text);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--border-strong);
 }
 
 button.ghost:hover:not(:disabled) {
-  background: var(--panel);
+  background: transparent;
   color: var(--text);
-  border-color: var(--border-strong);
+  border-color: var(--ink);
 }
 
 input,
@@ -88,15 +88,13 @@ select {
   font-size: 13px;
   font-family: inherit;
   width: 100%;
-  box-shadow: var(--shadow);
 }
 
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  border-color: var(--ink);
 }
 
 .center-screen {
@@ -112,7 +110,6 @@ select:focus {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
   padding: 32px;
   max-width: 460px;
   display: flex;
@@ -124,8 +121,7 @@ select:focus {
 }
 
 .setup-card h2 {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 19px;
 }
 
 .setup-card .row {
@@ -165,7 +161,7 @@ select:focus {
 .sidebar {
   width: 280px;
   flex-shrink: 0;
-  background: var(--panel);
+  background: var(--bg);
   border-right: 1px solid var(--border);
   padding: 24px 0 16px;
   display: flex;
@@ -180,16 +176,16 @@ select:focus {
 }
 
 .sidebar h1 {
-  font-size: 15px;
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  font-size: 18px;
   margin-bottom: 12px;
 }
 
 .section-label {
   color: var(--muted);
-  font-size: 11px;
-  font-weight: 550;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   margin-top: 14px;
 }
 
@@ -221,16 +217,14 @@ select:focus {
 }
 
 .bar {
-  height: 4px;
+  height: 3px;
   background: var(--code-bg);
-  border-radius: 999px;
   overflow: hidden;
 }
 
 .bar-fill {
   height: 100%;
-  background: var(--accent);
-  border-radius: 999px;
+  background: var(--ink);
   transition: width 0.2s;
 }
 
@@ -239,6 +233,7 @@ select:focus {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  background: var(--bg);
 }
 
 .messages {
@@ -264,8 +259,10 @@ select:focus {
 }
 
 .msg-role {
-  font-size: 11px;
-  font-weight: 550;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--muted);
   margin-bottom: 6px;
 }
@@ -274,7 +271,6 @@ select:focus {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
   padding: 12px 16px;
 }
 
@@ -292,12 +288,14 @@ select:focus {
 }
 
 .error {
-  color: var(--bad);
+  color: var(--text);
+  font-weight: 550;
 }
 
 .error.banner {
   padding: 8px 24px;
   font-size: 12px;
+  border-top: 1px solid var(--border);
 }
 
 .composer {
@@ -326,9 +324,7 @@ select:focus {
 }
 
 .onboarding h1 {
-  font-size: 23px;
-  font-weight: 650;
-  letter-spacing: -0.015em;
+  font-size: 30px;
 }
 
 /* Model picker */
@@ -348,7 +344,6 @@ select:focus {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
   padding: 14px 20px;
   font-size: 12.5px;
   color: var(--muted);
@@ -373,12 +368,14 @@ select:focus {
 }
 
 .device-chip {
-  background: var(--accent-soft);
-  color: var(--accent);
-  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: var(--radius-sm);
   padding: 4px 12px;
-  font-size: 11px;
-  font-weight: 550;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
@@ -389,25 +386,24 @@ select:focus {
 }
 
 button.chip {
-  background: var(--panel);
+  background: transparent;
   color: var(--muted);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   padding: 5px 14px;
   font-size: 12px;
-  box-shadow: var(--shadow);
 }
 
 button.chip:hover:not(:disabled) {
-  background: var(--panel);
+  background: transparent;
   color: var(--text);
   border-color: var(--border-strong);
 }
 
 button.chip.active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
 }
 
 .picker-section {
@@ -418,11 +414,13 @@ button.chip.active {
 }
 
 .section-head {
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .section-head::before {
@@ -434,27 +432,29 @@ button.chip.active {
 }
 
 .section-head.fit-great {
-  color: var(--good);
+  color: var(--text);
 }
 
 .section-head.fit-great::before {
-  background: var(--good);
+  background: var(--ink);
 }
 
 .section-head.fit-slow {
-  color: var(--warn);
+  color: var(--muted);
 }
 
 .section-head.fit-slow::before {
-  background: var(--warn);
+  background: transparent;
+  border: 1.5px solid var(--muted);
 }
 
 .section-head.fit-no {
-  color: var(--bad);
+  color: var(--light-muted);
 }
 
 .section-head.fit-no::before {
-  background: var(--bad);
+  background: transparent;
+  border: 1.5px solid var(--light-muted);
 }
 
 .cards {
@@ -467,18 +467,15 @@ button.chip.active {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
   padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 11px;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  transition: border-color 0.15s;
 }
 
 .card:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-1px);
+  border-color: var(--ink);
 }
 
 .card.compact {
@@ -502,7 +499,7 @@ button.chip.active {
   justify-content: center;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
 }
 
 .card-logo img {
@@ -514,7 +511,6 @@ button.chip.active {
 .card.compact .card-logo {
   width: 27px;
   height: 27px;
-  border-radius: 8px;
 }
 
 .card.compact .card-logo img {
@@ -539,22 +535,27 @@ button.chip.active {
 }
 
 .rec-badge {
-  background: var(--accent-soft);
-  color: var(--accent);
-  border-radius: 999px;
-  font-size: 10.5px;
-  font-weight: 550;
-  padding: 3px 10px;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: var(--radius-sm);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
   white-space: nowrap;
 }
 
 .cat-badge {
   color: var(--muted);
-  background: var(--code-bg);
-  border-radius: 999px;
-  font-size: 10.5px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 9.5px;
   font-weight: 500;
-  padding: 3px 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
   white-space: nowrap;
 }
 
@@ -566,7 +567,11 @@ button.chip.active {
 }
 
 .card.fit-no {
-  opacity: 0.55;
+  opacity: 0.5;
+}
+
+.card.fit-no:hover {
+  border-color: var(--border);
 }
 
 .card-foot {
@@ -578,22 +583,32 @@ button.chip.active {
   font-size: 11.5px;
 }
 
+.foot-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .installed-badge {
-  color: var(--good);
-  background: var(--good-soft);
-  border-radius: 999px;
-  padding: 3px 10px;
-  font-size: 10.5px;
-  font-weight: 550;
+  color: var(--text);
+  background: var(--ink-soft);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .toobig-badge {
-  color: var(--bad);
-  background: var(--bad-soft);
-  border-radius: 999px;
-  padding: 3px 10px;
-  font-size: 10.5px;
-  font-weight: 550;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .conv-list {
@@ -621,12 +636,12 @@ button.chip.active {
 
 .conv-list li:hover {
   color: var(--text);
-  background: var(--bg);
+  background: var(--code-bg);
 }
 
 .conv-list li.active {
-  color: var(--accent);
-  background: var(--accent-soft);
+  color: var(--text);
+  background: var(--ink-soft);
 }
 
 .conv-title {
@@ -694,7 +709,7 @@ button.tiny {
 
 .msg-content code {
   background: var(--code-bg);
-  border-radius: 5px;
+  border-radius: 4px;
   padding: 1px 5px;
   font-size: 12px;
   font-family: var(--mono);
@@ -736,4 +751,5 @@ button.tiny {
   margin: 14px 0 8px;
   font-size: 14px;
   font-weight: 600;
+  font-family: var(--sans);
 }

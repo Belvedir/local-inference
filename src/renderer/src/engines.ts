@@ -16,7 +16,7 @@ export const ENGINES: Record<EngineId, EngineDef> = {
   ollama: {
     label: 'Ollama',
     managedModels: true,
-    installHint: 'The bundled engine failed to launch. Installing Ollama separately also works — the app will find it.',
+    installHint: 'The bundled engine failed to launch. Installing Ollama separately also works; the app will find it.',
     installUrl: 'https://ollama.com/download'
   },
   llamacpp: {
@@ -40,7 +40,7 @@ export const ENGINES: Record<EngineId, EngineDef> = {
       'The vllm command was not found. Install it with `pip install vllm` and retry. Note: vLLM is built for Linux with NVIDIA GPUs; macOS support is limited.',
     installUrl: 'https://docs.vllm.ai',
     modelPlaceholder: 'HuggingFace model id',
-    modelHint: 'A HuggingFace model id — vLLM downloads and caches it automatically.',
+    modelHint: 'A HuggingFace model id. vLLM downloads and caches it automatically.',
     suggestions: ['Qwen/Qwen2.5-1.5B-Instruct', 'Qwen/Qwen2.5-7B-Instruct', 'HuggingFaceTB/SmolLM2-1.7B-Instruct']
   }
 }

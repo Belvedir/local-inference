@@ -52,7 +52,7 @@ export async function* streamChat(
     })
 
   let res = await post(body(true))
-  // Older servers reject stream_options — retry once without it.
+  // Older servers reject stream_options; retry once without it.
   if (res.status === 400) res = await post(body(false))
 
   let tokens = 0

@@ -128,7 +128,7 @@ async function waitForUp(engine: EngineId, port: number, timeoutMs: number): Pro
   return false
 }
 
-// Only stops a server this app started — never a user's own.
+// Only stops a server this app started, never a user's own.
 export function stopEngine(): void {
   spawned?.proc.kill()
   spawned = null
@@ -153,14 +153,14 @@ async function ensureOpenAiEngine(
   const ports = ENGINE_PORTS[engine]
 
   // A server we launched earlier, serving the requested model (or any model
-  // if none was requested) — just wait for it to be healthy.
+  // if none was requested): just wait for it to be healthy.
   if (spawned?.engine === engine && (!model || spawned.model === model)) {
     if (await waitForUp(engine, ports.spawn, 5_000)) {
       return { status: 'running', baseUrl: url(ports.spawn) }
     }
   }
 
-  // A server the user runs themselves on the engine's default port — adopt
+  // A server the user runs themselves on the engine's default port: adopt
   // it as-is (we can't change its model, so `model` is ignored here).
   if (spawned?.engine !== engine && (await isUp(engine, ports.external))) {
     return { status: 'running', baseUrl: url(ports.external) }

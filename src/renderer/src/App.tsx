@@ -72,6 +72,8 @@ export default function App() {
   const [error, setError] = useState('')
   const [pulling, setPulling] = useState<{ tag: string; progress: PullProgress } | null>(null)
   const [showPicker, setShowPicker] = useState(false)
+  // The app always opens on the model picker; chat is only reachable after a pick.
+  const [picked, setPicked] = useState(false)
   const [pullName, setPullName] = useState('')
   const abortRef = useRef<AbortController | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -224,7 +226,10 @@ export default function App() {
       }
       const list = await refreshModels(engine, baseUrl)
       const pulled = list.find((m) => m.name.startsWith(tag))
-      if (pulled) setSelectedModel(pulled.name)
+      if (pulled) {
+        setSelectedModel(pulled.name)
+        setPicked(true)
+      }
       setPullName('')
     } catch (e) {
       if ((e as Error).name !== 'AbortError') setError(String(e))
@@ -250,7 +255,7 @@ export default function App() {
           <div>Starting {engineDef.label}…</div>
           {engine !== 'ollama' && engineModels[engine] && (
             <div className="muted">
-              Loading {engineModels[engine]} — the first run downloads the model and can take a
+              Loading {engineModels[engine]}. The first run downloads the model and can take a
               while.
             </div>
           )}
@@ -279,7 +284,7 @@ export default function App() {
     )
   }
 
-  // llama.cpp / vLLM serve one model chosen at launch — ask for it once.
+  // llama.cpp / vLLM serve one model chosen at launch, so ask for it once.
   if (status === 'needs-model') {
     return (
       <div className="center-screen">
@@ -312,15 +317,25 @@ export default function App() {
     )
   }
 
-  // First run on Ollama: engine is up but no models yet — one guided decision.
-  if (engine === 'ollama' && models.length === 0) {
+  // Launch page: pick a model before entering chat. Installed models open
+  // with one click; new ones download first.
+  if (engine === 'ollama' && (!picked || models.length === 0)) {
     return (
       <div className="onboarding">
-        <h1>Pick a model to get started</h1>
+        <h1>{models.length === 0 ? 'Pick a model to get started' : 'Pick a model'}</h1>
         <p className="muted">
-          Everything runs on this machine — nothing leaves it. You can add more models later.
+          Everything runs on this machine, nothing leaves it. You can switch models later.
         </p>
-        <ModelPicker device={device} installed={[]} pulling={pulling} onPull={doPull} />
+        <ModelPicker
+          device={device}
+          installed={models.map((m) => m.name)}
+          pulling={pulling}
+          onPull={doPull}
+          onSelect={(name) => {
+            setSelectedModel(name)
+            setPicked(true)
+          }}
+        />
         {error && <div className="error banner">{error}</div>}
       </div>
     )
@@ -408,7 +423,7 @@ export default function App() {
         {showPicker && !engineDef.managedModels && (
           <div className="sidebar-picker">
             <p className="muted">
-              {engineDef.label} serves one model at a time — loading a new one restarts the
+              {engineDef.label} serves one model at a time. Loading a new one restarts the
               server.
             </p>
             <div className="pull-row">
@@ -442,7 +457,7 @@ export default function App() {
           {messages.length === 0 && (
             <div className="empty-hint">
               <p>
-                Chatting with {selectedModel} via {engineDef.label} — everything stays on this
+                Chatting with {selectedModel} via {engineDef.label}. Everything stays on this
                 machine.
               </p>
               <div className="starters">
