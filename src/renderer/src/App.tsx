@@ -20,6 +20,7 @@ import {
   saveEngine,
   saveEngineModels
 } from './storage'
+import { DeviceInfo } from './models'
 import ModelPicker from './components/ModelPicker'
 import MessageView from './components/MessageView'
 
@@ -56,7 +57,12 @@ export default function App() {
   const [engine, setEngine] = useState<EngineId>(() => loadEngine())
   const [engineModels, setEngineModels] = useState(() => loadEngineModels())
   const [baseUrl, setBaseUrl] = useState('')
-  const [sysMemGB, setSysMemGB] = useState(16)
+  const [device, setDevice] = useState<DeviceInfo>({
+    totalMemGB: 16,
+    arch: '',
+    platform: '',
+    cpuModel: ''
+  })
   const [models, setModels] = useState<ModelInfo[]>([])
   const [selectedModel, setSelectedModel] = useState('')
   const [convs, setConvs] = useState<Conversation[]>(() => loadConversations())
@@ -89,7 +95,7 @@ export default function App() {
     setModels([])
     try {
       const info = await window.api.systemInfo()
-      setSysMemGB(info.totalMemGB)
+      setDevice(info)
       const result = await window.api.ensureEngine(engine, engineModels[engine])
       setBaseUrl(result.baseUrl)
       if (result.status === 'running' || result.status === 'started') {
@@ -312,15 +318,9 @@ export default function App() {
       <div className="onboarding">
         <h1>Pick a model to get started</h1>
         <p className="muted">
-          Everything runs on this machine ({sysMemGB} GB memory) — nothing leaves it. You can
-          add more models later.
+          Everything runs on this machine — nothing leaves it. You can add more models later.
         </p>
-        <ModelPicker
-          totalMemGB={sysMemGB}
-          installed={[]}
-          pulling={pulling}
-          onPull={doPull}
-        />
+        <ModelPicker device={device} installed={[]} pulling={pulling} onPull={doPull} />
         {error && <div className="error banner">{error}</div>}
       </div>
     )
@@ -374,10 +374,11 @@ export default function App() {
         {showPicker && engineDef.managedModels && (
           <div className="sidebar-picker">
             <ModelPicker
-              totalMemGB={sysMemGB}
+              device={device}
               installed={models.map((m) => m.name)}
               pulling={pulling}
               onPull={doPull}
+              compact
             />
             <div className="pull-row">
               <input

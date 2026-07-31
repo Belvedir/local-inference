@@ -1,6 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
-import { totalmem } from 'os'
+import { cpus, totalmem } from 'os'
 import { ensureEngine, stopEngine, EngineId } from './engine'
 
 function createWindow(): void {
@@ -37,7 +37,8 @@ app.whenReady().then(() => {
   ipcMain.handle('system-info', () => ({
     totalMemGB: Math.round(totalmem() / 2 ** 30),
     arch: process.arch,
-    platform: process.platform
+    platform: process.platform,
+    cpuModel: cpus()[0]?.model ?? ''
   }))
 
   createWindow()

@@ -1,55 +1,222 @@
+export type Category = 'general' | 'coding' | 'reasoning' | 'vision'
+
+export const CATEGORY_LABEL: Record<Category, string> = {
+  general: 'General',
+  coding: 'Coding',
+  reasoning: 'Reasoning',
+  vision: 'Vision'
+}
+
 export interface CuratedModel {
   tag: string
   title: string
+  params: string
+  category: Category
   blurb: string
   downloadGB: number
   ramGB: number
 }
 
+// Ordered smallest to largest so grouping by fit reads naturally.
 export const CURATED: CuratedModel[] = [
   {
+    tag: 'llama3.2:1b',
+    title: 'Llama 3.2',
+    params: '1B',
+    category: 'general',
+    blurb: 'Tiny and instant — runs on almost anything',
+    downloadGB: 1.3,
+    ramGB: 2
+  },
+  {
+    tag: 'llama3.2:3b',
+    title: 'Llama 3.2',
+    params: '3B',
+    category: 'general',
+    blurb: 'Surprisingly capable for its size',
+    downloadGB: 2.0,
+    ramGB: 4
+  },
+  {
+    tag: 'qwen3:4b',
+    title: 'Qwen3',
+    params: '4B',
+    category: 'general',
+    blurb: 'Small but sharp, with a thinking mode',
+    downloadGB: 2.6,
+    ramGB: 5
+  },
+  {
+    tag: 'gemma3:4b',
+    title: 'Gemma 3',
+    params: '4B',
+    category: 'vision',
+    blurb: 'Light and snappy, can look at images',
+    downloadGB: 3.3,
+    ramGB: 5
+  },
+  {
     tag: 'llama3.1:8b',
-    title: 'Llama 3.1 8B',
+    title: 'Llama 3.1',
+    params: '8B',
+    category: 'general',
     blurb: 'Fast all-rounder — a great first model',
     downloadGB: 4.9,
     ramGB: 8
   },
   {
     tag: 'qwen2.5-coder:7b',
-    title: 'Qwen2.5 Coder 7B',
-    blurb: 'Best for writing and explaining code',
+    title: 'Qwen2.5 Coder',
+    params: '7B',
+    category: 'coding',
+    blurb: 'Best small model for writing and explaining code',
     downloadGB: 4.7,
     ramGB: 8
   },
   {
+    tag: 'deepseek-r1:8b',
+    title: 'DeepSeek-R1',
+    params: '8B',
+    category: 'reasoning',
+    blurb: 'Thinks step by step before answering',
+    downloadGB: 5.2,
+    ramGB: 8
+  },
+  {
+    tag: 'qwen3:8b',
+    title: 'Qwen3',
+    params: '8B',
+    category: 'general',
+    blurb: 'Strong all-rounder with built-in reasoning',
+    downloadGB: 5.2,
+    ramGB: 8
+  },
+  {
+    tag: 'gemma3:12b',
+    title: 'Gemma 3',
+    params: '12B',
+    category: 'vision',
+    blurb: 'Excellent writing, understands images',
+    downloadGB: 8.1,
+    ramGB: 11
+  },
+  {
+    tag: 'phi4:14b',
+    title: 'Phi-4',
+    params: '14B',
+    category: 'general',
+    blurb: 'Punches above its weight in math and logic',
+    downloadGB: 9.1,
+    ramGB: 12
+  },
+  {
     tag: 'qwen3:14b',
-    title: 'Qwen3 14B',
+    title: 'Qwen3',
+    params: '14B',
+    category: 'general',
     blurb: 'Stronger reasoning, still quick',
     downloadGB: 9.3,
     ramGB: 13
   },
   {
+    tag: 'qwen2.5-coder:14b',
+    title: 'Qwen2.5 Coder',
+    params: '14B',
+    category: 'coding',
+    blurb: 'Serious coding help without huge memory needs',
+    downloadGB: 9.0,
+    ramGB: 13
+  },
+  {
+    tag: 'gpt-oss:20b',
+    title: 'GPT-OSS',
+    params: '20B',
+    category: 'reasoning',
+    blurb: "OpenAI's open-weight model, built for reasoning and tools",
+    downloadGB: 14,
+    ramGB: 16
+  },
+  {
+    tag: 'mistral-small3.2:24b',
+    title: 'Mistral Small 3.2',
+    params: '24B',
+    category: 'general',
+    blurb: 'Efficient all-rounder that also reads images',
+    downloadGB: 15,
+    ramGB: 18
+  },
+  {
+    tag: 'gemma3:27b',
+    title: 'Gemma 3',
+    params: '27B',
+    category: 'vision',
+    blurb: 'Top-tier writing and image understanding',
+    downloadGB: 17,
+    ramGB: 21
+  },
+  {
     tag: 'qwen3:30b',
-    title: 'Qwen3 30B',
+    title: 'Qwen3',
+    params: '30B MoE',
+    category: 'general',
     blurb: 'Best overall quality — fast for its size (MoE)',
     downloadGB: 19,
     ramGB: 23
   },
   {
-    tag: 'gemma3:27b',
-    title: 'Gemma 3 27B',
-    blurb: 'Excellent writing, can look at images',
-    downloadGB: 17,
-    ramGB: 21
+    tag: 'deepseek-r1:32b',
+    title: 'DeepSeek-R1',
+    params: '32B',
+    category: 'reasoning',
+    blurb: 'Deep, careful reasoning for hard problems',
+    downloadGB: 20,
+    ramGB: 24
   },
   {
-    tag: 'gemma3:4b',
-    title: 'Gemma 3 4B',
-    blurb: 'Light and snappy on any machine',
-    downloadGB: 3.3,
-    ramGB: 5
+    tag: 'qwen2.5-coder:32b',
+    title: 'Qwen2.5 Coder',
+    params: '32B',
+    category: 'coding',
+    blurb: 'Near frontier-level coding, fully local',
+    downloadGB: 20,
+    ramGB: 24
+  },
+  {
+    tag: 'llama3.3:70b',
+    title: 'Llama 3.3',
+    params: '70B',
+    category: 'general',
+    blurb: 'Flagship quality — needs a big machine',
+    downloadGB: 43,
+    ramGB: 48
+  },
+  {
+    tag: 'gpt-oss:120b',
+    title: 'GPT-OSS',
+    params: '120B MoE',
+    category: 'reasoning',
+    blurb: "OpenAI's largest open model — workstation class",
+    downloadGB: 65,
+    ramGB: 80
   }
 ]
+
+export interface DeviceInfo {
+  totalMemGB: number
+  arch: string
+  platform: string
+  cpuModel: string
+}
+
+export function deviceLabel(d: DeviceInfo): string {
+  const os =
+    d.platform === 'darwin' ? 'macOS' : d.platform === 'win32' ? 'Windows' : 'Linux'
+  const chip =
+    d.platform === 'darwin' && d.arch === 'arm64'
+      ? 'Apple Silicon'
+      : d.cpuModel.replace(/\(R\)|\(TM\)|CPU|Processor/g, '').replace(/\s+/g, ' ').trim()
+  return chip ? `${os} · ${chip}` : os
+}
 
 export type Fit = 'great' | 'slow' | 'no'
 
@@ -63,6 +230,6 @@ export function fitFor(model: CuratedModel, totalMemGB: number): Fit {
 
 export function recommendedTag(totalMemGB: number): string {
   const fits = CURATED.filter((m) => fitFor(m, totalMemGB) === 'great')
-  if (fits.length === 0) return CURATED[CURATED.length - 1].tag
+  if (fits.length === 0) return CURATED[0].tag
   return fits.reduce((a, b) => (b.ramGB > a.ramGB ? b : a)).tag
 }

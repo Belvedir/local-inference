@@ -316,6 +316,82 @@ select:focus {
   letter-spacing: 0.1em;
 }
 
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.device-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+
+.device-chip {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+button.chip {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  font-size: 10px;
+}
+
+button.chip:hover:not(:disabled) {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--text);
+}
+
+button.chip.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.picker-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-head {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.section-head.fit-great {
+  color: var(--good);
+}
+
+.section-head.fit-slow {
+  color: var(--warn);
+}
+
+.section-head.fit-no {
+  color: var(--bad);
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -323,7 +399,6 @@ select:focus {
   border: 1px solid var(--border);
   border-right: none;
   border-bottom: none;
-  margin-top: 12px;
 }
 
 .card {
@@ -344,11 +419,31 @@ select:focus {
   gap: 8px;
 }
 
+.card.compact {
+  padding: 12px 14px;
+  gap: 7px;
+}
+
 .card-title {
   font-weight: 600;
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+}
+
+.card-params {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.cat-badge {
+  color: var(--muted);
+  border: 1px solid var(--border);
+  font-size: 9px;
+  padding: 2px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
 }
 
 .rec-badge {
@@ -368,25 +463,6 @@ select:focus {
   line-height: 1.5;
 }
 
-.fit-badge {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  align-self: flex-start;
-}
-
-.fit-badge.fit-great {
-  color: var(--good);
-}
-
-.fit-badge.fit-slow {
-  color: var(--warn);
-}
-
-.fit-badge.fit-no {
-  color: var(--bad);
-}
-
 .card.fit-no {
   opacity: 0.5;
 }
@@ -395,11 +471,20 @@ select:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
   font-size: 11px;
 }
 
 .installed-badge {
   color: var(--good);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.toobig-badge {
+  color: var(--bad);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
