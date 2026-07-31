@@ -25,12 +25,34 @@ import ModelPicker from './components/ModelPicker'
 import MessageView from './components/MessageView'
 import belvedirMark from './assets/belvedir-mark.svg'
 
-function Brand() {
+function Brand({ onClick }: { onClick?: () => void }) {
   return (
-    <div className="brand">
+    <div
+      className={`brand${onClick ? ' clickable' : ''}`}
+      onClick={onClick}
+      title={onClick ? 'Back to models' : undefined}
+    >
       <img src={belvedirMark} alt="" />
       <span>Belvedir</span>
     </div>
+  )
+}
+
+const FOOTER_LINKS = [
+  { label: 'Docs', url: 'https://docs.belvedir.ai' },
+  { label: 'Platform', url: 'https://platform.belvedir.ai/platform' },
+  { label: 'Contact support', url: 'mailto:founders@fractalresearch.ai' }
+]
+
+function FooterLinks() {
+  return (
+    <nav className="footer-links">
+      {FOOTER_LINKS.map((l) => (
+        <a key={l.label} onClick={() => window.api.openExternal(l.url)}>
+          {l.label}
+        </a>
+      ))}
+    </nav>
   )
 }
 
@@ -334,8 +356,11 @@ export default function App() {
       <div className="onboarding">
         <Brand />
         <h1>{models.length === 0 ? 'Pick a model to get started' : 'Pick a model'}</h1>
-        <p className="muted">
-          Everything runs on this machine, nothing leaves it. You can switch models later.
+        <p className="muted onboarding-intro">
+          A local inference provider by Belvedir: open models download once, then run entirely on
+          your own hardware. No API keys, no per-token costs, and your prompts and conversations
+          never leave this machine. Pick a model that fits your device to get started — you can
+          switch or add more anytime.
         </p>
         <ModelPicker
           device={device}
@@ -348,6 +373,7 @@ export default function App() {
           }}
         />
         {error && <div className="error banner">{error}</div>}
+        <FooterLinks />
       </div>
     )
   }
@@ -355,31 +381,43 @@ export default function App() {
   return (
     <div className="layout">
       <aside className="sidebar">
-        <Brand />
+        <Brand
+          onClick={() => {
+            setActiveId(null)
+            setPicked(false)
+          }}
+        />
 
-        <button onClick={() => setActiveId(null)}>New chat</button>
+        <button className="new-chat" onClick={() => setActiveId(null)}>
+          <span className="new-chat-plus">+</span> New chat
+        </button>
 
-        <ul className="conv-list">
-          {convs.map((c) => (
-            <li
-              key={c.id}
-              className={c.id === activeId ? 'active' : ''}
-              onClick={() => setActiveId(c.id)}
-            >
-              <span className="conv-title">{c.title}</span>
-              <button
-                className="ghost tiny"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setConvs((cur) => cur.filter((x) => x.id !== c.id))
-                  if (activeId === c.id) setActiveId(null)
-                }}
+        <label className="section-label">Recent</label>
+        {convs.length === 0 ? (
+          <p className="muted recent-empty">No saved chats yet. They save automatically as you talk.</p>
+        ) : (
+          <ul className="conv-list">
+            {convs.map((c) => (
+              <li
+                key={c.id}
+                className={c.id === activeId ? 'active' : ''}
+                onClick={() => setActiveId(c.id)}
               >
-                ✕
-              </button>
-            </li>
-          ))}
-        </ul>
+                <span className="conv-title">{c.title}</span>
+                <button
+                  className="ghost tiny"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setConvs((cur) => cur.filter((x) => x.id !== c.id))
+                    if (activeId === c.id) setActiveId(null)
+                  }}
+                >
+                  ✕
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
 
         <label className="section-label">Engine</label>
         <EngineSelect engine={engine} onChange={switchEngine} disabled={streaming || !!pulling} />
@@ -461,6 +499,8 @@ export default function App() {
             </div>
           </div>
         )}
+
+        <FooterLinks />
       </aside>
 
       <main className="chat">
@@ -478,9 +518,13 @@ export default function App() {
         <div className="messages" ref={scrollRef}>
           {messages.length === 0 && (
             <div className="empty-hint">
-              <h2>What should we work on?</h2>
+              <div className="empty-brand">
+                <img src={belvedirMark} alt="" />
+                <span>Belvedir</span>
+              </div>
               <p className="muted">
-                {selectedModel} is running on this machine. Nothing leaves your device.
+                What to do first? Ask anything. {selectedModel} runs on this machine, and nothing
+                leaves your device.
               </p>
               <div className="starters">
                 {STARTERS.map((s) => (
@@ -509,7 +553,7 @@ export default function App() {
         <div className="composer">
           <div className="composer-box">
             <textarea
-              placeholder={`Message ${selectedModel}…`}
+              placeholder="Ask anything…"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -522,16 +566,27 @@ export default function App() {
               autoFocus
             />
             <div className="composer-bar">
-              <span className="composer-hint">Enter to send · Shift+Enter for a new line</span>
               {streaming ? (
-                <button onClick={() => abortRef.current?.abort()}>Stop</button>
+                <button
+                  className="send-btn"
+                  onClick={() => abortRef.current?.abort()}
+                  aria-label="Stop"
+                >
+                  ◼
+                </button>
               ) : (
-                <button onClick={() => send()} disabled={!input.trim() || !selectedModel}>
-                  Send
+                <button
+                  className="send-btn"
+                  onClick={() => send()}
+                  disabled={!input.trim() || !selectedModel}
+                  aria-label="Send"
+                >
+                  ↑
                 </button>
               )}
             </div>
           </div>
+          <p className="composer-note">Local models can make mistakes. Verify important outputs.</p>
         </div>
       </main>
     </div>
